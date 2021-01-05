@@ -63,6 +63,7 @@ export default function Home() {
                     return <List.Item key={result.imdbID}>{result.Title} ({result.Year})</List.Item>
                   })}
                 </List>
+                {results.length == 0 && <p>Keep searching!</p>}
               </Card>
               <Card title="Nominations" sectioned>
                 Nominations
