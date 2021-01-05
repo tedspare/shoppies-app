@@ -1,8 +1,14 @@
 import Head from 'next/head'
+import { useCallback, useState } from "react";
 import styles from '../styles/Home.module.css'
-import { Layout, Card, FormLayout, TextField } from '@shopify/polaris'
+import { Layout, Card, Icon, Link, FormLayout, TextField } from '@shopify/polaris'
+import { SearchMinor } from '@shopify/polaris-icons'
 
 export default function Home() {
+  const [query, setQuery] = useState('');
+
+  const handleQuery = useCallback((newQuery) => setQuery(newQuery), []);
+
   return (
     <div className={styles.container}>
       <Head>
@@ -11,35 +17,39 @@ export default function Home() {
       </Head>
 
       <Layout>
-
         <Layout.AnnotatedSection
           title="The Shoppies"
           description="Shopify and your customers will use this information to contact you."
         >
           <Card sectioned>
             <FormLayout>
-              <TextField label="Movie title" onChange={console.log} />
+              <TextField
+                label="Movie title"
+                value={query}
+                onChange={handleQuery}
+                prefix={<Icon source={SearchMinor} color="inkLighter" />}
+                placeholder="Search"
+              />
             </FormLayout>
           </Card>
-          <Card sectioned>
+          <Card title="Results" sectioned>
             Results
           </Card>
-          <Card sectioned>
+          <Card title="Nominations" sectioned>
             Nominations
           </Card>
         </Layout.AnnotatedSection>
       </Layout>
 
       <footer className={styles.footer}>
-        To Shopify ❤️
-        <a
-          href="https://github.com/tedspare"
-          target="_blank"
-          rel="noopener noreferrer"
-          style={{ padding: "10px" }}
+        <p style={{ padding: "10px" }}> To Shopify ❤️</p>
+        <Link
+          external
+          url="https://github.com/tedspare"
+
         >
           Ted Spare
-        </a>
+        </Link>
       </footer>
     </div>
   )
