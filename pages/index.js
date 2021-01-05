@@ -1,7 +1,7 @@
 import Head from 'next/head'
 import { useCallback, useState, useEffect } from "react"
 import styles from '../styles/Home.module.css'
-import { Layout, Card, Icon, Link, FormLayout, TextField, List } from '@shopify/polaris'
+import { Layout, Card, Icon, Link, FormLayout, TextField, List, Stack, Page } from '@shopify/polaris'
 import { SearchMinor } from '@shopify/polaris-icons'
 
 export default function Home() {
@@ -14,6 +14,7 @@ export default function Home() {
   useEffect(() => {
     if (query.length <= 2) {
       setResultsTitle('Results')
+      setResults([])
       return
     }
     setResultsTitle(`Results for "${query}"`)
@@ -36,34 +37,40 @@ export default function Home() {
         <link rel="icon" href="/favicon.svg" />
       </Head>
 
-      <Layout>
-        <Layout.AnnotatedSection
-          title="The Shoppies"
-          description="Shopify and your customers will use this information to contact you."
-        >
-          <Card sectioned>
-            <FormLayout>
-              <TextField
-                label="Movie title"
-                value={query}
-                onChange={handleQuery}
-                prefix={<Icon source={SearchMinor} color="inkLighter" />}
-                placeholder="Search"
-              />
-            </FormLayout>
-          </Card>
-          <Card title={resultsTitle} sectioned>
-            <List type="bullet">
-              {results.map((result) => {
-                return <List.Item key={result.imdbID}>{result.Title} ({result.Year})</List.Item>
-              })}
-            </List>
-          </Card>
-          <Card title="Nominations" sectioned>
-            Nominations
-          </Card>
-        </Layout.AnnotatedSection>
-      </Layout>
+      <Page
+        narrowWidth
+        title="The Shoppies"
+      >
+        <Layout>
+          <Layout.Section>
+            <Card sectioned>
+              <FormLayout>
+                <TextField
+                  label="Movie title"
+                  value={query}
+                  onChange={handleQuery}
+                  prefix={<Icon source={SearchMinor} color="inkLighter" />}
+                  placeholder="Search"
+                />
+              </FormLayout>
+            </Card>
+          </Layout.Section>
+          <Layout.Section>
+            <Stack distribution="fillEvenly" wrap={false}>
+              <Card title={resultsTitle} sectioned>
+                <List type="bullet">
+                  {results.map((result) => {
+                    return <List.Item key={result.imdbID}>{result.Title} ({result.Year})</List.Item>
+                  })}
+                </List>
+              </Card>
+              <Card title="Nominations" sectioned>
+                Nominations
+              </Card>
+            </Stack>
+          </Layout.Section>
+        </Layout>
+      </Page>
 
       <footer className={styles.footer}>
         <p style={{ padding: "10px" }}> To Shopify ❤️</p>
