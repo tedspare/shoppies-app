@@ -1,13 +1,20 @@
 import Head from 'next/head'
 import { useCallback, useState } from "react";
 import styles from '../styles/Home.module.css'
-import { Layout, Card, Icon, Link, FormLayout, TextField } from '@shopify/polaris'
+import { Layout, Card, Icon, Link, FormLayout, TextField, List } from '@shopify/polaris'
 import { SearchMinor } from '@shopify/polaris-icons'
 
 export default function Home() {
   const [query, setQuery] = useState('');
 
   const handleQuery = useCallback((newQuery) => setQuery(newQuery), []);
+
+  const samplePayload = {
+    Search: [{ Title: "Apocalypse Now", Year: "1979" }, {
+      Title: "X-Men: Apocalypse",
+      Year: "2016",
+    }]
+  }
 
   return (
     <div className={styles.container}>
@@ -32,8 +39,12 @@ export default function Home() {
               />
             </FormLayout>
           </Card>
-          <Card title="Results" sectioned>
-            Results
+          <Card title="Results for ..." sectioned>
+            <List type="bullet">
+              {samplePayload.Search.map((result) => {
+                return <List.Item>{result.Title} ({result.Year})</List.Item>
+              })}
+            </List>
           </Card>
           <Card title="Nominations" sectioned>
             Nominations
@@ -46,7 +57,6 @@ export default function Home() {
         <Link
           external
           url="https://github.com/tedspare"
-
         >
           Ted Spare
         </Link>
