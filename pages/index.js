@@ -7,24 +7,27 @@ import { SearchMinor } from '@shopify/polaris-icons'
 export default function Home() {
   const [query, setQuery] = useState('')
   const [resultsTitle, setResultsTitle] = useState('')
+  const [results, setResults] = useState([])
 
   const handleQuery = useCallback((newQuery) => setQuery(newQuery), [])
 
   useEffect(() => {
-    if (query.length == 0) {
+    if (query.length <= 2) {
       setResultsTitle('Results')
       return
     }
     setResultsTitle(`Results for "${query}"`)
+    fetch(
+      `http://www.omdbapi.com/?apikey=7f720b3d&s=${query}`,
+      { method: "GET" }
+    )
+      .then(res => res.json())
+      .then(res => {
+        if (res.Response == "True") { setResults(res.Search) }
+        else setResults([])
+      })
     return
   }, [query])
-
-  const samplePayload = {
-    Search: [{ Title: "Apocalypse Now", Year: "1979" }, {
-      Title: "X-Men: Apocalypse",
-      Year: "2016",
-    }]
-  }
 
   return (
     <div className={styles.container}>
@@ -51,8 +54,8 @@ export default function Home() {
           </Card>
           <Card title={resultsTitle} sectioned>
             <List type="bullet">
-              {samplePayload.Search.map((result) => {
-                return <List.Item>{result.Title} ({result.Year})</List.Item>
+              {results.map((result) => {
+                return <List.Item key={result.imdbID}>{result.Title} ({result.Year})</List.Item>
               })}
             </List>
           </Card>
