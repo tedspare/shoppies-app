@@ -18,7 +18,7 @@ export default function Home() {
     }
     setResultsTitle(`Results for "${query}"`)
     fetch(
-      `http://www.omdbapi.com/?apikey=7f720b3d&s=${query}`,
+      `https://www.omdbapi.com/?apikey=7f720b3d&s=${query}`,
       { method: "GET" }
     )
       .then(res => res.json())
