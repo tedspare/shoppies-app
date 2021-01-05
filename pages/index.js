@@ -1,5 +1,6 @@
 import Head from 'next/head'
 import styles from '../styles/Home.module.css'
+import { Layout, Card, FormLayout, TextField } from '@shopify/polaris'
 
 export default function Home() {
   return (
@@ -9,11 +10,25 @@ export default function Home() {
         <link rel="icon" href="/favicon.svg" />
       </Head>
 
-      <main className={styles.main}>
-        <h1 className={styles.title}>
-          The Shoppies
-        </h1>
-      </main>
+      <Layout>
+
+        <Layout.AnnotatedSection
+          title="The Shoppies"
+          description="Shopify and your customers will use this information to contact you."
+        >
+          <Card sectioned>
+            <FormLayout>
+              <TextField label="Movie title" onChange={console.log} />
+            </FormLayout>
+          </Card>
+          <Card sectioned>
+            Results
+          </Card>
+          <Card sectioned>
+            Nominations
+          </Card>
+        </Layout.AnnotatedSection>
+      </Layout>
 
       <footer className={styles.footer}>
         To Shopify ❤️
