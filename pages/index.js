@@ -1,13 +1,23 @@
 import Head from 'next/head'
-import { useCallback, useState } from "react";
+import { useCallback, useState, useEffect } from "react"
 import styles from '../styles/Home.module.css'
 import { Layout, Card, Icon, Link, FormLayout, TextField, List } from '@shopify/polaris'
 import { SearchMinor } from '@shopify/polaris-icons'
 
 export default function Home() {
-  const [query, setQuery] = useState('');
+  const [query, setQuery] = useState('')
+  const [resultsTitle, setResultsTitle] = useState('')
 
-  const handleQuery = useCallback((newQuery) => setQuery(newQuery), []);
+  const handleQuery = useCallback((newQuery) => setQuery(newQuery), [])
+
+  useEffect(() => {
+    if (query.length == 0) {
+      setResultsTitle('Results')
+      return
+    }
+    setResultsTitle(`Results for "${query}"`)
+    return
+  }, [query])
 
   const samplePayload = {
     Search: [{ Title: "Apocalypse Now", Year: "1979" }, {
@@ -39,7 +49,7 @@ export default function Home() {
               />
             </FormLayout>
           </Card>
-          <Card title="Results for ..." sectioned>
+          <Card title={resultsTitle} sectioned>
             <List type="bullet">
               {samplePayload.Search.map((result) => {
                 return <List.Item>{result.Title} ({result.Year})</List.Item>
