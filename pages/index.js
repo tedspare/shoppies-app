@@ -31,15 +31,15 @@ export default function Home() {
   }, [query])
 
   return (
-    <div className={styles.container}>
+    <div style={{ "paddingTop": "15vh" }}>
       <Head>
         <title>The Shoppies</title>
         <link rel="icon" href="/favicon.svg" />
       </Head>
 
       <Page
-        narrowWidth
         title="The Shoppies"
+        style={{ "maxWidth": "900px" }}
       >
         <Layout>
           <Layout.Section>
@@ -56,8 +56,8 @@ export default function Home() {
             </Card>
           </Layout.Section>
           <Layout.Section>
-            <Stack distribution="fillEvenly" wrap={false}>
-              <Card title={resultsTitle} sectioned>
+            <Stack distribution="fill" wrap={false}>
+              <Card title={resultsTitle} sectioned >
                 <List type="bullet">
                   {results.map((result) => {
                     return <List.Item key={result.imdbID}>{result.Title} ({result.Year})</List.Item>
