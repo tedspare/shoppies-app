@@ -21,15 +21,16 @@ export default function Home() {
   const [query, setQuery] = useState('')
   const [resultsTitle, setResultsTitle] = useState('')
   const [results, setResults] = useState([])
-  const [nominations, setNominations] = useState({})
+  const [nominations, setNominations] = useState([])
 
   const handleQuery = useCallback((newQuery) => setQuery(newQuery), [])
 
   const handleNominate = useCallback((nomination) => {
-    setNominations({
-      ...nominations,
-      [nomination.imdbID]: nomination.Title
-    })
+    setNominations([...nominations, nomination])
+  })
+
+  const handleRemove = useCallback((nomination) => {
+    console.log("to remove")
   })
 
   useEffect(() => {
@@ -86,6 +87,9 @@ export default function Home() {
                     const shortcutActions = {
                       content: 'Nominate',
                       accessibilityLabel: `Nominate ${Title}`,
+                      disabled: nominations
+                        .map(nom => nom.imdbID)
+                        .includes(item.imdbID),
                       onClick: () => handleNominate(item)
                     }
                     return (
@@ -113,7 +117,31 @@ export default function Home() {
             </Layout.Section>
             <Layout.Section oneHalf>
               <Card title="Nominations" sectioned>
-                Nominations
+                <ResourceList
+                  resourceName={{ singular: 'Nomination', plural: 'Nominations' }}
+                  items={nominations}
+                  emptyState="Add your first nomination!"
+                  renderItem={(item) => {
+                    const { imdbID, Title, Year, Poster } = item;
+                    const shortcutActions = {
+                      content: 'Remove',
+                      accessibilityLabel: `Remove ${Title}`,
+                      onClick: () => handleRemove(item)
+                    }
+                    return (
+                      <ResourceItem
+                        id={imdbID}
+                        accessibilityLabel={`Remove ${Title}`}
+                        shortcutActions={shortcutActions}
+                      >
+                        <h3>
+                          <TextStyle variation="strong">{Title}</TextStyle>
+                        </h3>
+                        <p>{Year}</p>
+                      </ResourceItem>
+                    );
+                  }}
+                />
               </Card>
             </Layout.Section>
           </Layout>
