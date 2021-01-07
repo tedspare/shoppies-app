@@ -21,10 +21,16 @@ export default function Home() {
   const [query, setQuery] = useState('')
   const [resultsTitle, setResultsTitle] = useState('')
   const [results, setResults] = useState([])
+  const [nominations, setNominations] = useState({})
 
   const handleQuery = useCallback((newQuery) => setQuery(newQuery), [])
 
-  const handleNominate = (event) => console.log(event)
+  const handleNominate = useCallback((nomination) => {
+    setNominations({
+      ...nominations,
+      [nomination.imdbID]: nomination.Title
+    })
+  })
 
   useEffect(() => {
     if (query.length <= 2) {
@@ -80,13 +86,13 @@ export default function Home() {
                     const shortcutActions = {
                       content: 'Nominate',
                       accessibilityLabel: `Nominate ${Title}`,
+                      onClick: () => handleNominate(item)
                     }
                     return (
                       <ResourceItem
                         id={imdbID}
                         accessibilityLabel={`Nominate ${Title}`}
                         shortcutActions={shortcutActions}
-                        onClick={(evt) => console.log(evt)}
                       // media={<Avatar
                       //   customer
                       //   name={Title}
