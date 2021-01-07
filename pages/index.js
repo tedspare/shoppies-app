@@ -1,7 +1,20 @@
 import Head from 'next/head'
 import { useCallback, useState, useEffect } from "react"
 import styles from '../styles/Home.module.css'
-import { Layout, Card, Icon, Link, FormLayout, TextField, List, Stack, Page, Button } from '@shopify/polaris'
+import {
+  Layout,
+  Card,
+  Icon,
+  Link,
+  FormLayout,
+  TextField,
+  Stack,
+  Page,
+  ResourceList,
+  ResourceItem,
+  TextStyle,
+  Avatar
+} from '@shopify/polaris'
 import { SearchMinor } from '@shopify/polaris-icons'
 
 export default function Home() {
@@ -58,19 +71,38 @@ export default function Home() {
           <Layout>
             <Layout.Section oneHalf>
               <Card title={resultsTitle} sectioned>
-                <List type="bullet">
-                  {results.map((result) => {
+                <ResourceList
+                  resourceName={{ singular: 'Result', plural: 'Results' }}
+                  items={results}
+                  emptyState="Keep searching!"
+                  renderItem={(item) => {
+                    const { imdbID, Title, Year, Poster } = item;
+                    const shortcutActions = {
+                      content: 'Nominate',
+                      accessibilityLabel: `Nominate ${Title}`,
+                    }
                     return (
-                      <List.Item key={result.imdbID}>
-                        <Stack distribution="equalSpacing" alignment="center">
-                          <p style={{ "word-wrap": "break-word", width: "250px" }}>{result.Title} ({result.Year})</p>
-                          <Button outline size="slim" onClick={handleNominate}>Nominate</Button>
-                        </Stack>
-                      </List.Item>
-                    )
-                  })}
-                </List>
-                {results.length == 0 && <p>Keep searching!</p>}
+                      <ResourceItem
+                        id={imdbID}
+                        accessibilityLabel={`Nominate ${Title}`}
+                        shortcutActions={shortcutActions}
+                        onClick={(evt) => console.log(evt)}
+                      // media={<Avatar
+                      //   customer
+                      //   name={Title}
+                      //   source={Poster}
+                      //   initials="OMDB"
+                      //   accessibilityLabel={`Poster for ${Title}`}
+                      // />}
+                      >
+                        <h3>
+                          <TextStyle variation="strong">{Title}</TextStyle>
+                        </h3>
+                        <p>{Year}</p>
+                      </ResourceItem>
+                    );
+                  }}
+                />
               </Card>
             </Layout.Section>
             <Layout.Section oneHalf>
