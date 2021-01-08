@@ -21,16 +21,19 @@ export default function Home() {
   const [query, setQuery] = useState('')
   const [resultsTitle, setResultsTitle] = useState('')
   const [results, setResults] = useState([])
-  const [nominations, setNominations] = useState([])
+  const [nominations, setNominations] = useState({})
 
   const handleQuery = useCallback((newQuery) => setQuery(newQuery), [])
 
   const handleNominate = useCallback((nomination) => {
-    setNominations([...nominations, nomination])
+    setNominations({ ...nominations, [nomination.imdbID]: nomination })
   })
 
-  const handleRemove = useCallback((nomination) => {
-    console.log("to remove")
+  const handleRemove = useCallback((imdbID) => {
+    setNominations(nominations => {
+      const { [imdbID]: value, ...remainder } = nominations
+      return remainder
+    })
   })
 
   useEffect(() => {
@@ -87,9 +90,7 @@ export default function Home() {
                     const shortcutActions = {
                       content: 'Nominate',
                       accessibilityLabel: `Nominate ${Title}`,
-                      disabled: nominations
-                        .map(nom => nom.imdbID)
-                        .includes(item.imdbID),
+                      disabled: Object.keys(nominations).includes(item.imdbID),
                       onClick: () => handleNominate(item)
                     }
                     return (
@@ -119,14 +120,14 @@ export default function Home() {
               <Card title="Nominations" sectioned>
                 <ResourceList
                   resourceName={{ singular: 'Nomination', plural: 'Nominations' }}
-                  items={nominations}
+                  items={Object.values(nominations)}
                   emptyState="Add your first nomination!"
                   renderItem={(item) => {
                     const { imdbID, Title, Year, Poster } = item;
                     const shortcutActions = {
                       content: 'Remove',
                       accessibilityLabel: `Remove ${Title}`,
-                      onClick: () => handleRemove(item)
+                      onClick: () => handleRemove(item.imdbID)
                     }
                     return (
                       <ResourceItem
