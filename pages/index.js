@@ -7,18 +7,13 @@ import {
   FormLayout,
   TextField,
   Stack,
-  Page,
-  ResourceList,
-  ResourceItem,
-  TextStyle,
-  Avatar,
-  Banner,
-  TextContainer
+  Page
 } from '@shopify/polaris'
 import { SearchMinor } from '@shopify/polaris-icons'
 import Footer from '../components/footer'
 import Nominations from '../components/nominations'
 import SuccessBanner from '../components/banner'
+import Results from '../components/results'
 
 export default function Home() {
   const [query, setQuery] = useState('')
@@ -102,39 +97,10 @@ export default function Home() {
           <Layout>
             <Layout.Section oneHalf>
               <Card title={resultsTitle} sectioned>
-                <ResourceList
-                  resourceName={{ singular: 'Result', plural: 'Results' }}
-                  items={results}
-                  emptyState="Keep searching!"
-                  renderItem={(item) => {
-                    const { imdbID, Title, Year, Poster } = item;
-                    const shortcutActions = {
-                      content: 'Nominate',
-                      accessibilityLabel: `Nominate ${Title}`,
-                      disabled: Object.keys(nominations).includes(item.imdbID),
-                      primary: true,
-                      onClick: () => handleNominate(item)
-                    }
-                    return (
-                      <ResourceItem
-                        id={imdbID}
-                        accessibilityLabel={`Nominate ${Title}`}
-                        shortcutActions={shortcutActions}
-                      // media={<Avatar
-                      //   customer
-                      //   name={Title}
-                      //   source={Poster}
-                      //   initials="OMDB"
-                      //   accessibilityLabel={`Poster for ${Title}`}
-                      // />}
-                      >
-                        <h3 style={{ maxWidth: "60%" }}>
-                          <TextStyle variation="strong">{Title}</TextStyle>
-                        </h3>
-                        <p>{Year}</p>
-                      </ResourceItem>
-                    );
-                  }}
+                <Results
+                  resultsList={results}
+                  nominations={nominations}
+                  nominateHandler={handleNominate}
                 />
               </Card>
             </Layout.Section>
