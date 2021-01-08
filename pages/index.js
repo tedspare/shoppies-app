@@ -123,13 +123,13 @@ export default function Home() {
                         id={imdbID}
                         accessibilityLabel={`Nominate ${Title}`}
                         shortcutActions={shortcutActions}
-                      // media={<Avatar
-                      //   customer
-                      //   name={Title}
-                      //   source={Poster}
-                      //   initials="OMDB"
-                      //   accessibilityLabel={`Poster for ${Title}`}
-                      // />}
+                        media={<Avatar
+                          customer
+                          name={Title}
+                          source={Poster}
+                          initials="OMDB"
+                          accessibilityLabel={`Poster for ${Title}`}
+                        />}
                       >
                         <h3 style={{ maxWidth: "60%" }}>
                           <TextStyle variation="strong">{Title}</TextStyle>
