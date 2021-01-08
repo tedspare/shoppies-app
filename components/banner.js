@@ -1,11 +1,17 @@
 import React from 'react'
 import { Banner, TextContainer } from '@shopify/polaris'
 
-export default function SuccessBanner(props) {
+/**
+ * Component for displaying a success message to the user
+ * after they have nominated five movies
+ * 
+ * @param {function} dismissHandler - Dismiss button click callback 
+ * 
+ * @return {element} Banner component with text and dismiss events
+ */
+export default function SuccessBanner({ dismissHandler }) {
 
-    const handleDismiss = () => {
-        props.dismissHandler()
-    }
+    const handleDismiss = () => dismissHandler()
 
     return (
         <TextContainer>
@@ -18,7 +24,8 @@ export default function SuccessBanner(props) {
                 }}
                 onDismiss={() => handleDismiss()}
             >
-                <p>Thank you for nominating five movies! You are free to continue nominating.</p>
+                <p>Thank you for nominating five movies!
+                    You are free to continue nominating.</p>
             </Banner>
         </TextContainer>
     )
