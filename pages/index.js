@@ -7,7 +7,19 @@ import Results from '../components/results'
 import SearchBar from '../components/searchbar'
 import Header from '../components/header'
 
+/**
+ * Main component for rendering the search bar, search results,
+ * nominations, and success banner components.
+ * 
+ * @return {element} Div containing the page header, footer, and
+ * Page component containing the layout and sub-components.
+ */
 export default function Home() {
+
+  /**
+   * State initialization with getters and setters
+   */
+
   const [query, setQuery] = useState('')
   const [resultsTitle, setResultsTitle] = useState('')
   const [results, setResults] = useState([])
@@ -16,12 +28,19 @@ export default function Home() {
   const [bannerDismissed, setBannerDismissed] = useState(false)
   const [pageTitle, setPageTitle] = useState('The Shoppies')
 
+  /**
+   * Event handlers
+   */
+
+  // Query (search) from text input
   const handleQuery = useCallback((newQuery) => setQuery(newQuery), [])
 
+  // Nomination of a search result
   const handleNominate = useCallback((nomination) => {
     setNominations({ ...nominations, [nomination.imdbID]: nomination })
   })
 
+  // Nomination removal
   const handleRemove = useCallback((imdbID) => {
     setNominations(nominations => {
       const { [imdbID]: value, ...remainder } = nominations
@@ -29,13 +48,21 @@ export default function Home() {
     })
   })
 
+  // Success banner dismissal
   const handleDismiss = useCallback(() => setBannerDismissed(true), [])
 
+  /**
+   * State watchers with side-effects
+   */
+
+  // On first mount, check if the user has previously stored nominations
+  // If so, get them from local storage and set them to state
   useEffect(() => {
     const savedNominations = window.localStorage.getItem("nominations")
     if (savedNominations) setNominations(JSON.parse(savedNominations))
   }, [])
 
+  // To avoid broad API calls, treat short search terms as empty
   useEffect(() => {
     if (query.length <= 2) {
       setResultsTitle('Results')
@@ -54,6 +81,7 @@ export default function Home() {
     return
   }, [query])
 
+  // User has nominated five movies - indicate success in several ways
   useEffect(() => {
     if (Object.keys(nominations).length >= 5) {
       setNominated(true)
@@ -62,6 +90,8 @@ export default function Home() {
     window.localStorage.setItem("nominations", JSON.stringify(nominations))
   }, [nominations])
 
+  // Render the success banner if the user has completed five nominations
+  // and has not yet dismissed the banner
   const banner = (nominated && !bannerDismissed) ?
     <SuccessBanner dismissHandler={handleDismiss} />
     : null
@@ -69,6 +99,7 @@ export default function Home() {
   return (
     <div style={{ "paddingTop": "15vh" }}>
       <Header pageTitle={pageTitle} />
+
       <Page title="The Shoppies" style={{ "maxWidth": "900px" }}>
         <Stack vertical>
           <Card sectioned>
@@ -93,6 +124,7 @@ export default function Home() {
           </Layout>
         </Stack>
       </Page>
+
       <Footer />
     </div>
   )
