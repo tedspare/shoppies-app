@@ -13,7 +13,9 @@ import {
   ResourceList,
   ResourceItem,
   TextStyle,
-  Avatar
+  Avatar,
+  Banner,
+  TextContainer
 } from '@shopify/polaris'
 import { SearchMinor } from '@shopify/polaris-icons'
 
@@ -22,6 +24,8 @@ export default function Home() {
   const [resultsTitle, setResultsTitle] = useState('')
   const [results, setResults] = useState([])
   const [nominations, setNominations] = useState({})
+  const [nominated, setNominated] = useState(false)
+  const [bannerDismissed, setBannerDismissed] = useState(false)
 
   const handleQuery = useCallback((newQuery) => setQuery(newQuery), [])
 
@@ -54,6 +58,26 @@ export default function Home() {
       })
     return
   }, [query])
+
+  useEffect(() => {
+    setNominated(Object.keys(nominations).length >= 5)
+  }, [nominations])
+
+  const banner = nominated && !bannerDismissed ? (
+    <TextContainer>
+      <Banner
+        title="Complete 🎉"
+        status="success"
+        action={{
+          content: 'Keep nominating',
+          onClick: () => { setBannerDismissed(true) }
+        }}
+        onDismiss={() => { setBannerDismissed(true) }}
+      >
+        <p>Thank you for nominating five movies! You are free to continue nominating.</p>
+      </Banner>
+    </TextContainer>
+  ) : null
 
   return (
     <div style={{ "paddingTop": "15vh" }}>
@@ -119,6 +143,7 @@ export default function Home() {
             </Layout.Section>
             <Layout.Section oneHalf>
               <Card title="Nominations" sectioned>
+                {banner}
                 <ResourceList
                   resourceName={{ singular: 'Nomination', plural: 'Nominations' }}
                   items={Object.values(nominations)}
