@@ -41,6 +41,11 @@ export default function Home() {
   })
 
   useEffect(() => {
+    const savedNominations = window.localStorage.getItem("nominations")
+    if (savedNominations) setNominations(JSON.parse(savedNominations))
+  }, [])
+
+  useEffect(() => {
     if (query.length <= 2) {
       setResultsTitle('Results')
       setResults([])
@@ -61,6 +66,7 @@ export default function Home() {
 
   useEffect(() => {
     setNominated(Object.keys(nominations).length >= 5)
+    window.localStorage.setItem("nominations", JSON.stringify(nominations))
   }, [nominations])
 
   const banner = nominated && !bannerDismissed ? (
