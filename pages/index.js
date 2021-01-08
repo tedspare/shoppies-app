@@ -131,7 +131,7 @@ export default function Home() {
                       //   accessibilityLabel={`Poster for ${Title}`}
                       // />}
                       >
-                        <h3>
+                        <h3 style={{ maxWidth: "60%" }}>
                           <TextStyle variation="strong">{Title}</TextStyle>
                         </h3>
                         <p>{Year}</p>
@@ -163,7 +163,7 @@ export default function Home() {
                         accessibilityLabel={`Remove ${Title}`}
                         shortcutActions={shortcutActions}
                       >
-                        <h3>
+                        <h3 style={{ maxWidth: "60%" }}>
                           <TextStyle variation="strong">{Title}</TextStyle>
                         </h3>
                         <p>{Year}</p>
