@@ -18,6 +18,7 @@ import {
 import { SearchMinor } from '@shopify/polaris-icons'
 import Footer from '../components/footer'
 import Nominations from '../components/nominations'
+import SuccessBanner from '../components/banner'
 
 export default function Home() {
   const [query, setQuery] = useState('')
@@ -39,6 +40,8 @@ export default function Home() {
       return remainder
     })
   })
+
+  const handleDismiss = useCallback(() => setBannerDismissed(true), [])
 
   useEffect(() => {
     const savedNominations = window.localStorage.getItem("nominations")
@@ -69,21 +72,9 @@ export default function Home() {
     window.localStorage.setItem("nominations", JSON.stringify(nominations))
   }, [nominations])
 
-  const banner = nominated && !bannerDismissed ? (
-    <TextContainer>
-      <Banner
-        title="Complete 🎉"
-        status="success"
-        action={{
-          content: 'Keep nominating',
-          onClick: () => { setBannerDismissed(true) }
-        }}
-        onDismiss={() => { setBannerDismissed(true) }}
-      >
-        <p>Thank you for nominating five movies! You are free to continue nominating.</p>
-      </Banner>
-    </TextContainer>
-  ) : null
+  const banner = (nominated && !bannerDismissed) ?
+    <SuccessBanner dismissHandler={handleDismiss} />
+    : null
 
   return (
     <div style={{ "paddingTop": "15vh" }}>
