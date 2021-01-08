@@ -1,11 +1,9 @@
 import Head from 'next/head'
 import { useCallback, useState, useEffect } from "react"
-import styles from '../styles/Home.module.css'
 import {
   Layout,
   Card,
   Icon,
-  Link,
   FormLayout,
   TextField,
   Stack,
@@ -18,6 +16,7 @@ import {
   TextContainer
 } from '@shopify/polaris'
 import { SearchMinor } from '@shopify/polaris-icons'
+import Footer from '../components/footer'
 
 export default function Home() {
   const [query, setQuery] = useState('')
@@ -183,15 +182,7 @@ export default function Home() {
         </Stack>
       </Page>
 
-      <footer className={styles.footer}>
-        <p style={{ padding: "10px" }}> To Shopify ❤️</p>
-        <Link
-          external
-          url="https://github.com/tedspare"
-        >
-          Ted Spare
-        </Link>
-      </footer>
+      <Footer />
     </div>
   )
 }
