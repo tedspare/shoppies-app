@@ -91,6 +91,7 @@ export default function Home() {
                       content: 'Nominate',
                       accessibilityLabel: `Nominate ${Title}`,
                       disabled: Object.keys(nominations).includes(item.imdbID),
+                      primary: true,
                       onClick: () => handleNominate(item)
                     }
                     return (
@@ -127,7 +128,9 @@ export default function Home() {
                     const shortcutActions = {
                       content: 'Remove',
                       accessibilityLabel: `Remove ${Title}`,
-                      onClick: () => handleRemove(item.imdbID)
+                      onClick: () => handleRemove(item.imdbID),
+                      destructive: true,
+                      outline: true
                     }
                     return (
                       <ResourceItem
