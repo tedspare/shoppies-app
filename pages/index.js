@@ -1,19 +1,11 @@
 import Head from 'next/head'
 import { useCallback, useState, useEffect } from "react"
-import {
-  Layout,
-  Card,
-  Icon,
-  FormLayout,
-  TextField,
-  Stack,
-  Page
-} from '@shopify/polaris'
-import { SearchMinor } from '@shopify/polaris-icons'
+import { Layout, Card, Stack, Page } from '@shopify/polaris'
 import Footer from '../components/footer'
 import Nominations from '../components/nominations'
 import SuccessBanner from '../components/banner'
 import Results from '../components/results'
+import SearchBar from '../components/searchbar'
 
 export default function Home() {
   const [query, setQuery] = useState('')
@@ -56,8 +48,7 @@ export default function Home() {
     )
       .then(res => res.json())
       .then(res => {
-        if (res.Response == "True") { setResults(res.Search) }
-        else setResults([])
+        setResults(res.Response == "True" ? res.Search : [])
       })
     return
   }, [query])
@@ -84,15 +75,7 @@ export default function Home() {
       >
         <Stack vertical>
           <Card sectioned>
-            <FormLayout>
-              <TextField
-                label="Movie title"
-                value={query}
-                onChange={handleQuery}
-                prefix={<Icon source={SearchMinor} color="inkLighter" />}
-                placeholder="Search"
-              />
-            </FormLayout>
+            <SearchBar query={query} queryHandler={handleQuery} />
           </Card>
           <Layout>
             <Layout.Section oneHalf>
