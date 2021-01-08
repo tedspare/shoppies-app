@@ -17,6 +17,7 @@ import {
 } from '@shopify/polaris'
 import { SearchMinor } from '@shopify/polaris-icons'
 import Footer from '../components/footer'
+import Nominations from '../components/nominations'
 
 export default function Home() {
   const [query, setQuery] = useState('')
@@ -128,13 +129,13 @@ export default function Home() {
                         id={imdbID}
                         accessibilityLabel={`Nominate ${Title}`}
                         shortcutActions={shortcutActions}
-                        media={<Avatar
-                          customer
-                          name={Title}
-                          source={Poster}
-                          initials="OMDB"
-                          accessibilityLabel={`Poster for ${Title}`}
-                        />}
+                      // media={<Avatar
+                      //   customer
+                      //   name={Title}
+                      //   source={Poster}
+                      //   initials="OMDB"
+                      //   accessibilityLabel={`Poster for ${Title}`}
+                      // />}
                       >
                         <h3 style={{ maxWidth: "60%" }}>
                           <TextStyle variation="strong">{Title}</TextStyle>
@@ -149,33 +150,7 @@ export default function Home() {
             <Layout.Section oneHalf>
               <Card title="Nominations" sectioned>
                 {banner}
-                <ResourceList
-                  resourceName={{ singular: 'Nomination', plural: 'Nominations' }}
-                  items={Object.values(nominations)}
-                  emptyState="Add your first nomination!"
-                  renderItem={(item) => {
-                    const { imdbID, Title, Year, Poster } = item;
-                    const shortcutActions = {
-                      content: 'Remove',
-                      accessibilityLabel: `Remove ${Title}`,
-                      onClick: () => handleRemove(item.imdbID),
-                      destructive: true,
-                      outline: true
-                    }
-                    return (
-                      <ResourceItem
-                        id={imdbID}
-                        accessibilityLabel={`Remove ${Title}`}
-                        shortcutActions={shortcutActions}
-                      >
-                        <h3 style={{ maxWidth: "60%" }}>
-                          <TextStyle variation="strong">{Title}</TextStyle>
-                        </h3>
-                        <p>{Year}</p>
-                      </ResourceItem>
-                    );
-                  }}
-                />
+                <Nominations nominations={nominations} removeHandler={handleRemove} />
               </Card>
             </Layout.Section>
           </Layout>
