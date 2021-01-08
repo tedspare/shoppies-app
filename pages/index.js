@@ -1,4 +1,3 @@
-import Head from 'next/head'
 import { useCallback, useState, useEffect } from "react"
 import { Layout, Card, Stack, Page } from '@shopify/polaris'
 import Footer from '../components/footer'
@@ -6,6 +5,7 @@ import Nominations from '../components/nominations'
 import SuccessBanner from '../components/banner'
 import Results from '../components/results'
 import SearchBar from '../components/searchbar'
+import Header from '../components/header'
 
 export default function Home() {
   const [query, setQuery] = useState('')
@@ -14,6 +14,7 @@ export default function Home() {
   const [nominations, setNominations] = useState({})
   const [nominated, setNominated] = useState(false)
   const [bannerDismissed, setBannerDismissed] = useState(false)
+  const [pageTitle, setPageTitle] = useState('The Shoppies')
 
   const handleQuery = useCallback((newQuery) => setQuery(newQuery), [])
 
@@ -54,7 +55,10 @@ export default function Home() {
   }, [query])
 
   useEffect(() => {
-    setNominated(Object.keys(nominations).length >= 5)
+    if (Object.keys(nominations).length >= 5) {
+      setNominated(true)
+      setPageTitle('The Shoppies 🎉')
+    }
     window.localStorage.setItem("nominations", JSON.stringify(nominations))
   }, [nominations])
 
@@ -64,15 +68,8 @@ export default function Home() {
 
   return (
     <div style={{ "paddingTop": "15vh" }}>
-      <Head>
-        <title>The Shoppies</title>
-        <link rel="icon" href="/favicon.svg" />
-      </Head>
-
-      <Page
-        title="The Shoppies"
-        style={{ "maxWidth": "900px" }}
-      >
+      <Header pageTitle={pageTitle} />
+      <Page title="The Shoppies" style={{ "maxWidth": "900px" }}>
         <Stack vertical>
           <Card sectioned>
             <SearchBar query={query} queryHandler={handleQuery} />
@@ -96,7 +93,6 @@ export default function Home() {
           </Layout>
         </Stack>
       </Page>
-
       <Footer />
     </div>
   )

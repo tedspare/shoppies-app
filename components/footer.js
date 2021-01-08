@@ -6,7 +6,7 @@ export default function Footer() {
     return (
         <div>
             <footer className={styles.footer}>
-                <p style={{ padding: "10px" }}> To Shopify ❤️</p>
+                <p> To Shopify ❤️ </p>
                 <Link
                     external
                     url="https://github.com/tedspare"
